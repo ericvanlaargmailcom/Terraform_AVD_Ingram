@@ -105,3 +105,38 @@ resource "azurerm_key_vault_access_policy" "example" {
 
   secret_permissions = ["Get"]
 }
+
+resource "azurerm_virtual_desktop_host_pool" "hostpool" {
+  name                = "hostpooleje1"
+  location            = azurerm_resource_group.avd_rg.location
+  resource_group_name = azurerm_resource_group.avd_rg.name
+  type                = "Pooled"
+  load_balancer_type  = "BreadthFirst"
+  friendly_name       = "Host Pool EJE1"
+}
+
+resource "azurerm_virtual_desktop_application_group" "app_group" {
+  name                = "appgroup1"
+  location            = azurerm_resource_group.avd_rg.location
+  resource_group_name = azurerm_resource_group.avd_rg.name
+  host_pool_id        = azurerm_virtual_desktop_host_pool.hostpool.id
+  type                = "Desktop"
+}
+
+resource "azurerm_virtual_desktop_workspace" "workspace" {
+  name                = "workspace1"
+  location            = azurerm_resource_group.avd_rg.location
+  resource_group_name = azurerm_resource_group.avd_rg.name
+  description         = "Workspace for AVD"
+  friendly_name       = "Workspace EJE1"
+}
+
+resource "azurerm_virtual_desktop_workspace_application_group_association" "association" {
+  workspace_id         = azurerm_virtual_desktop_workspace.workspace.id
+  application_group_id = azurerm_virtual_desktop_application_group.app_group.id
+}
+
+resource "azurerm_virtual_desktop_host_pool_registration_info" "registration_info" {
+  hostpool_id      = azurerm_virtual_desktop_host_pool.hostpool.id
+  expiration_date  = "2025-02-24T23:59:59Z"
+}
