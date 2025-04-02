@@ -5,7 +5,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "avd_rg" {
-  name     = "avdResourceGroup"
+  name     = "rg-AVD-Ingram-poc-we-001"
   location = var.region
 
   lifecycle {
@@ -137,6 +137,6 @@ resource "azurerm_virtual_desktop_workspace_application_group_association" "asso
 }
 
 resource "azurerm_virtual_desktop_host_pool_registration_info" "registration_info" {
-  hostpool_id      = azurerm_virtual_desktop_host_pool.hostpool.id
-  expiration_date  = "2025-02-24T23:59:59Z"
+  hostpool_id     = azurerm_virtual_desktop_host_pool.hostpool.id
+  expiration_date = "2025-04-24T23:59:59Z"
 }
